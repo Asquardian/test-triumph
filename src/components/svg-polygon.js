@@ -105,13 +105,13 @@ export class Polygon extends HTMLElement {
       position.y = -30;
     }
 
-    if(position.y > this.parentElement.offsetHeight - 180){
-      position.y = this.parentElement.offsetHeight - 180;
+    if(position.y > parentElement.offsetHeight - 180){
+      position.y = parentElement.offsetHeight - 180;
     }
 
 
-    if(position.x > this.parentElement.offsetWidth - 180){
-      position.x = this.parentElement.offsetWidth - 180;
+    if(position.x > parentElement.offsetWidth - 180){
+      position.x = parentElement.offsetWidth - 180;
     }
     return position;
   }
