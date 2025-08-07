@@ -91,9 +91,8 @@ export class WorkArea extends HTMLElement {
 
   scaleGrid(event) {
     event.preventDefault();
-    if(this.isMove && this.parentElement.classList.contains("work-area__container")) {
+    if(this.isMove && this.parentElement && this.parentElement.classList.contains("work-area__container")) {
       this.parentElement.scrollLeft += event.wheelDelta > 0? 30 : -30;
-      console.log(this.parentElement.scrollLeft);
       return;
     }
     const delta = event.deltaY < 0 ? 0.1 : -0.1;
@@ -116,7 +115,7 @@ export class WorkArea extends HTMLElement {
     for(let i = 1; i < numbers; i++){ //Пропускаем 0 элемент. Без него визуально лучше
       const label = document.createElement("div");
       label.style.setProperty("--offset", `${i * breakpoint}px`);
-      label.textContent = (i * breakpoint).toString();
+      label.textContent = (i * breakpoint / 10).toString();
       el.append(label)
     }
   }
