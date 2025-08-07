@@ -3,10 +3,10 @@ export class Polygon extends HTMLElement {
     super();
     this.shadow = this.attachShadow({ mode: "open" });
 
-    this.offsetX = 0;
-    this.offsetY = 0;
-    this.isDragging = false;
-    this.position = { x: 0, y: 0 }
+    this._offsetX = 0;
+    this._offsetY = 0;
+    this._isDragging = false;
+    this._position = { x: 0, y: 0 }
 
     this.style.zIndex = "1";
 
@@ -172,6 +172,14 @@ export class Polygon extends HTMLElement {
 
   get offsetX() {
     return this._offsetX;
+  }
+
+  set position(value) {
+    this._position = value;
+  }
+
+  get position() {
+    return this._position;
   }
 
   get offsetY() {

@@ -15,8 +15,8 @@ export function init() {
         e.target.value = 20;
         return
       }
-      if(value < 1) {
-        e.target.value = 1;
+      if(value < 5) {
+        e.target.value = 5;
       }
     })
   }

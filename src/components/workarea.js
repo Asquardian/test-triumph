@@ -7,7 +7,7 @@ export class WorkArea extends HTMLElement {
     this._zoom = 1;
     this._minZoom = 1;
     this._maxZoom = 2;
-    this._isMove = false
+    this._isMove = false; //Если можно двигать
     this._startDragPos = { x: 0, y: 0 };
     this._translate = { x: 0, y: 0 }
 
@@ -39,7 +39,7 @@ export class WorkArea extends HTMLElement {
   }
 
   startTranslateGrid(event) {
-    if (event.target === this) {
+    if (event.target === this && event.button === 0) {
       event.preventDefault();
       this._startDragPos = {
         x: event.clientX - this._translate.x,
@@ -72,7 +72,7 @@ export class WorkArea extends HTMLElement {
   }
 
   endTranslateGrid(event) {
-    if (event.button === 1 || this.isMove) {
+    if (this.isMove) {
       this.isMove = false;
     }
   }
@@ -91,6 +91,11 @@ export class WorkArea extends HTMLElement {
 
   scaleGrid(event) {
     event.preventDefault();
+    if(this.isMove && this.parentElement.classList.contains("work-area__container")) {
+      this.parentElement.scrollLeft += event.wheelDelta > 0? 30 : -30;
+      console.log(this.parentElement.scrollLeft);
+      return;
+    }
     const delta = event.deltaY < 0 ? 0.1 : -0.1;
     this.zoom += delta;
 
