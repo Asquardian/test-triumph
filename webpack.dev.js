@@ -17,4 +17,16 @@ module.exports = {
     hot: true
   },
   devtool: 'inline-source-map',
+  module: {
+    rules: [
+      {
+        test: /\.scss$/i,
+        use: [
+          "style-loader",
+          "css-loader",
+          "sass-loader",
+        ],
+      },
+    ],
+  }
 };

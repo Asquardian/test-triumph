@@ -302,7 +302,7 @@ After deploying the boilerplate the webcomponent files in the SRC will be bundle
  - install the webpack-cli (the tool used to run webpack on the command line)<br>
  `npm install webpack webpack-cli --save-dev`<br>
  <br>
- 
+
 ### Creating a bundle
 To test the webcomponent on docker you'll have first to bundle all your files and assets (ex: CSS, Images, Fonts) in a single JS file. <br>
 You can also see <b>[here](https://webpack.js.org/guides/asset-management) </b>the guide provided by Webapack on how to bundle assets.<br>
@@ -318,7 +318,7 @@ const path = require('path');
 
 module.exports = {
   mode: 'production',
-  entry: './src/index.js', //your js file that will be bundles
+  entry: './src/svg-polygon.js', //your js file that will be bundles
   output: {
     filename: 'webcomp-boilerplate.min.js', // the bundled file - the file name you should also put in the manifest.json
     path: path.resolve(__dirname, 'dist'),
@@ -334,7 +334,7 @@ const path = require('path');
 
 module.exports = {
   mode: 'development',
-  entry: './src/index.js', //your js file that will be bundles
+  entry: './src/svg-polygon.js', //your js file that will be bundles
   output: {
     filename: 'webcomp-boilerplate.js', //this will be only saved in the memory, usufull for testing
     clean: true
