@@ -3,6 +3,24 @@ import {WorkArea} from "./components/workarea";
 
 export function init() {
 
+  const quantityInput = document.querySelector(".js-input");
+  if(quantityInput) {
+    quantityInput.addEventListener("change", (e) => {
+      const value = Number(e.target.value);
+      if(isNaN(value)) {
+        e.target.value = 10;
+        return;
+      }
+      if(value > 20) {
+        e.target.value = 20;
+        return
+      }
+      if(value < 1) {
+        e.target.value = 1;
+      }
+    })
+  }
+
   //кнопка сохранить
   const saveBtn = document.querySelector(".js-save");
   if (saveBtn) {
@@ -45,8 +63,11 @@ export function init() {
       if(!container) {
         return;
       }
+
+      const value = quantityInput? quantityInput.value : 4;
+
       container.innerHTML = '';
-      for(let i = 0; i < 5; i++) {
+      for(let i = 0; i < value; i++) {
         const polygon = new Polygon;
         container.appendChild(polygon);
       }

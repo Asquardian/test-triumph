@@ -60,3 +60,31 @@ html, body {
   overflow: hidden;
   background-color: #f6f6f6;
 }
+
+.buffer {
+  &__control {
+    width: 100%;
+    display: flex;
+    gap: 10px;
+
+    button {
+      display: flex;
+      padding: 8px 18px;
+      background-color: #636363;
+      border: none;
+      border-radius: 4px;
+      color: white;
+      outline: none;
+      cursor: pointer;
+
+      &:hover {
+        background-color: #494949;
+      }
+    }
+  }
+
+  &__container {
+    padding: 20px;
+    background-color: rgba(0, 0, 0, 0.32);
+  }
+}
