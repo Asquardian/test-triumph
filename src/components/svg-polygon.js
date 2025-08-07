@@ -76,26 +76,44 @@ export class Polygon extends HTMLElement {
       return; // Игнорируем элементы вне раб области
     }
 
-    this.position = this.setPositionElement(event.clientX, event.clientY);
+    this.position = this.setPositionElement(event.clientX, event.clientY, this.parentElement);
 
     this.style.setProperty("--x", `${this.position.x}px`)
     this.style.setProperty("--y", `${this.position.y}px`)
   }
 
-  setPositionElement(clientX, clientY) {
+  setPositionElement(clientX, clientY, parentElement) {
 
-    const parentRect = this.parentElement.getBoundingClientRect();
-    const scaleX = parentRect.width / this.parentElement.offsetWidth;
-    const scaleY = parentRect.height / this.parentElement.offsetHeight;
+    const parentRect = parentElement.getBoundingClientRect();
+    const scaleX = parentRect.width / parentElement.offsetWidth;
+    const scaleY = parentRect.height / parentElement.offsetHeight;
 
     // Вычисляем позицию относительно контейнера с учётом scale
     const x = (clientX - parentRect.left - this.offsetX * scaleX);
     const y = (clientY - parentRect.top - this.offsetY * scaleY);
 
-    return {
+    const position = {
       x: x / scaleX,
       y: y / scaleY,
+    };
+
+    if(position.x < -30){
+      position.x = -30;
     }
+
+    if(position.y < -30){
+      position.y = -30;
+    }
+
+    if(position.y > this.parentElement.offsetHeight - 180){
+      position.y = this.parentElement.offsetHeight - 180;
+    }
+
+
+    if(position.x > this.parentElement.offsetWidth - 180){
+      position.x = this.parentElement.offsetWidth - 180;
+    }
+    return position;
   }
 
   attributeChangedCallback(propName, oldValue, newValue) {
@@ -113,8 +131,13 @@ export class Polygon extends HTMLElement {
       this.initMove(); //Если находится в рабочей зоне
     } else {
       this.addEventListener("dragend", this.onDrag)
+      this.addEventListener("dragstart", this.onDragStart)
     }
     this.render();
+  }
+
+  onDragStart(event) {
+    [this.offsetX, this.offsetY] = this.getOffset(event.clientX, event.clientY);
   }
 
   onDrag(event) {
@@ -123,9 +146,19 @@ export class Polygon extends HTMLElement {
 
     if(dropTarget) {
       const clone = new Polygon();
-      clone.setAttribute("points", JSON.stringify(this.points)); //Создаем точный клон элемента
+      console.log(event);
+      clone.cloneProps(this.points, this.offsetX, this.offsetY, event.clientX, event.clientY, dropTarget);
       dropTarget.append(clone);
     }
+  }
+
+  cloneProps(points, offsetX, offsetY, clientX, clientY, parentElement) {
+    this.points = points;
+    this.offsetX = offsetX;
+    this.offsetY = offsetY;
+    this.position = this.setPositionElement(clientX, clientY, parentElement);
+    this.style.setProperty("--x", `${this.position.x}px`)
+    this.style.setProperty("--y", `${this.position.y}px`)
   }
 
   //Создание точек для случайной фигуры.
@@ -197,9 +230,7 @@ export class Polygon extends HTMLElement {
 
     const polygon = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
     polygon.setAttribute('points', this.points.map(p => `${p.x},${p.y}`).join(' '));
-    polygon.setAttribute('fill', 'lightblue');
-    polygon.setAttribute('stroke', 'darkblue');
-    polygon.setAttribute('stroke-width', '1');
+    polygon.setAttribute('fill', '#940025');
 
     svg.appendChild(polygon);
     this.shadow.appendChild(svg);

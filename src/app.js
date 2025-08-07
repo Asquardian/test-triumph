@@ -51,26 +51,31 @@ export function init() {
       document.querySelectorAll("work-area svg-polygon").forEach(
         el => el.remove()
       )
+
+      createNewElements();
     })
   }
 
+  const createNewElements = () => {
+    const container = document.querySelector(".js-buffer-elements");
+    if(!container) {
+      return;
+    }
+
+    const value = quantityInput? quantityInput.value : 4;
+
+    container.innerHTML = '';
+    for(let i = 0; i < value; i++) {
+      const polygon = new Polygon;
+      container.appendChild(polygon);
+    }
+  }
 
   //кнопка создать новые элементы
   const createBtn = document.querySelector(".js-create");
   if (createBtn) {
     createBtn.addEventListener("click", () => {
-      const container = document.querySelector(".js-buffer-elements");
-      if(!container) {
-        return;
-      }
-
-      const value = quantityInput? quantityInput.value : 4;
-
-      container.innerHTML = '';
-      for(let i = 0; i < value; i++) {
-        const polygon = new Polygon;
-        container.appendChild(polygon);
-      }
+      createNewElements();
     })
   }
 

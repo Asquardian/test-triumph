@@ -5,9 +5,11 @@ work-area {
   overflow: hidden;
   transform: scale(var(--zoom)) translate(var(--translateX), var(--translateY));
   background-image:
-    linear-gradient(to right, #eee 1px, transparent 1px),
-    linear-gradient(to bottom, #eee 1px, transparent 1px);
+    linear-gradient(to right, #a6a6a6 1px, transparent 1px),
+    linear-gradient(to bottom, #a6a6a6 1px, transparent 1px);
   background-size: var(--cell) var(--cell);
+  transform-origin: 0 0;
+  will-change: transform;
 
 
   .x-labels, .y-labels {
@@ -15,17 +17,19 @@ work-area {
     position: absolute;
 
     div {
+      color: #a6a6a6;
       width: var(--cell);
-      height: var(--cell);
+      height: 14px;
       position: absolute;
-      font-size: max(calc(var(--cell) - 10px), 5px);
+      font-size: 12px;
       z-index: 100;
     }
   }
 
   .x-labels {
     width: 100%;
-    height: var(--cell);
+    height: 14px;
+    pointer-events: none;
 
     div {
       left: var(--offset);
@@ -33,8 +37,9 @@ work-area {
   }
 
   .y-labels {
+    pointer-events: none;
     height: 100%;
-    width: var(--cell);
+    width: 14px;
 
     div {
       top: var(--offset);
@@ -58,7 +63,7 @@ html, body {
   width: 100%;
   height: 1000px;
   overflow: hidden;
-  background-color: #f6f6f6;
+  background-color: #333333;
 }
 
 .buffer {

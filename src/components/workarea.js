@@ -5,7 +5,7 @@ export class WorkArea extends HTMLElement {
     super();
     //Значения по умолчанию
     this._zoom = 1;
-    this._minZoom = 1;
+    this._minZoom = 0.8;
     this._maxZoom = 2;
     this._isMove = false; //Если можно двигать
     this._startDragPos = { x: 0, y: 0 };
@@ -14,9 +14,10 @@ export class WorkArea extends HTMLElement {
     //Брейкпойинты
     this.cellOptions = new Map(
       [
-        [1, "20px"],
-        [1.5, "15px"],
-        [2, "10px"],
+        [0.8, "150px"],
+        [1, "50px"],
+        [1.5, "35px"],
+        [2, "20px"],
       ]
     );
 
@@ -95,9 +96,30 @@ export class WorkArea extends HTMLElement {
       this.parentElement.scrollLeft += event.wheelDelta > 0? 30 : -30;
       return;
     }
-    const delta = event.deltaY < 0 ? 0.1 : -0.1;
-    this.zoom += delta;
 
+    const zoomStep = 0.1;
+    const delta = event.deltaY < 0 ? zoomStep : -zoomStep;
+
+    const oldZoom = this.zoom;
+    const newZoom = Math.max(this._minZoom, Math.min(this._maxZoom, oldZoom + delta));
+
+    if (newZoom === oldZoom) return;
+
+    const rect = this.getBoundingClientRect();
+    const cursorX = event.clientX - rect.left;
+    const cursorY = event.clientY - rect.top;
+
+    const contentX = (cursorX - this._translate.x) / oldZoom;
+    const contentY = (cursorY - this._translate.y) / oldZoom;
+
+    this.zoom = newZoom;
+    const zoomDelta = 0.8;
+
+
+    this.translate = {
+      x: (cursorX - contentX * newZoom) * zoomDelta,
+      y: (cursorY - contentY * newZoom) * zoomDelta,
+    };
     this.createLabels();
   }
 
